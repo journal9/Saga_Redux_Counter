@@ -4,8 +4,9 @@ import { useDispatch,useSelector } from 'react-redux';
 import { getCatsFetch } from './store/catSlice';
 
 function App() {
-  const cats = useSelector(state=>state.cats.cats)
+  const {cats,isLoading} = useSelector(state=>state.cats)
   const dispatch =useDispatch()
+  console.log(isLoading)
 
   useEffect(()=>{
     dispatch(getCatsFetch())
@@ -17,6 +18,7 @@ function App() {
       <h1>CATS GALLARY</h1>
       <p>Images of different species of cats. Lots of cats for you.</p>
       <hr/>
+      {isLoading?<h4>loading........</h4>:<h4>done</h4>}
       <div className="Gallery">
         {cats.map(cat=>
           <div key={cat.id} className="row">
@@ -31,7 +33,7 @@ function App() {
           </div>
         )}
       </div>
-      <button>VIEW MORE CATS</button>
+      {isLoading?<hr/>:<button>VIEW MORE CATS</button>}
     </div>
   );
 }
