@@ -1,24 +1,15 @@
-import { put, takeEvery, all } from 'redux-saga/effects'
-export function* asyncIncreement(){
+import { put, takeEvery, call } from 'redux-saga/effects'
+import { getCatsSuccess } from '../store/catSlice';
 
+function* workcatsFetch(){
+    const cats = yield call(()=>fetch('https://api.thecatapi.com/v1/breeds'));
+    const formattedCats = yield cats.json();
+    const returnedCats = formattedCats.slice(0,10);
+    yield put(getCatsSuccess(returnedCats));
 }
 
-export function* watcherAsyncIncreement(){
-
+function* catSaga(){
+    yield takeEvery('cats/getCatsFetch',workcatsFetch);
 }
 
-export function* asyncDeccreement(){
-
-}
-
-export function* watcherAsyncDecreement(){
-    takeaway
-
-}
-
-export default function* reetSaga(){
-    yield all([
-        watcherAsyncIncreement(),
-        watcherAsyncDecreement()
-    ])
-}
+export default catSaga;
